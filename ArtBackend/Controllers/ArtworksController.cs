@@ -21,14 +21,13 @@ public class ArtworksController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateArtworkRequest request)
+    public async Task<IActionResult> Create([FromForm] CreateArtworkRequest request, IFormFile image)
     {
         var artwork = new Artwork
         {
             Id = Guid.NewGuid(),
             Title = request.Title,
             Type = request.Type,
-            ImageUrl = request.ImageUrl,
             Year = request.Year,
             Medium = request.Medium,
             Size = request.Size,
@@ -36,7 +35,8 @@ public class ArtworksController : ControllerBase
             Sold = false
         };
 
-        var created = await _service.CreateAsync(artwork);
+        using var stream = image.OpenReadStream();
+        var created = await _service.CreateAsync(artwork, stream, image.FileName, image.ContentType);
         return CreatedAtAction(nameof(GetAll), created);
     }
 }
