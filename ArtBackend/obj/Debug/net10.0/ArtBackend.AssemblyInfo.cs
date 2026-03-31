@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ArtBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4a397300ff7dbc4d9bb539b0d775b4081cc6e6d2")]
 [assembly: System.Reflection.AssemblyProductAttribute("ArtBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ArtBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
