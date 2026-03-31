@@ -1,3 +1,5 @@
+using ArtBackend.Domain.Interfaces;
+using ArtBackend.Infrastructure.Storage;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // DI
 builder.Services.AddScoped<IArtworkRepository, ArtworkRepository>();
 builder.Services.AddScoped<IArtworkService, ArtworkService>();
+builder.Services.AddSingleton<IStorageService, GoogleCloudStorageService>();
 
 builder.Services.AddControllers();
 
