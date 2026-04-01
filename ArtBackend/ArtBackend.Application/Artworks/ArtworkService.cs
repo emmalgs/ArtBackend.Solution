@@ -17,10 +17,26 @@ public class ArtworkService : IArtworkService
     return _repo.GetAllAsync();
   }
 
+  public Task<Artwork?> GetByIdAsync(Guid id)
+  {
+    return _repo.GetByIdAsync(id);
+  }
+
   public async Task<Artwork> CreateAsync(Artwork artwork, Stream imageStream, string fileName, string contentType)
   {
     var imageUrl = await _storage.UploadAsync(imageStream, fileName, contentType);
     artwork.ImageUrl = imageUrl;
     return await _repo.CreateAsync(artwork);
+  }
+
+  public Task<Artwork?> UpdateAsync(Artwork artwork)
+  {
+    return _repo.UpdateAsync(artwork);
+  }
+
+  public async Task<bool> DeleteAsync(Guid id, string imageFileName)
+  {
+    await _storage.DeleteAsync(imageFileName);
+    return await _repo.DeleteAsync(id);
   }
 }

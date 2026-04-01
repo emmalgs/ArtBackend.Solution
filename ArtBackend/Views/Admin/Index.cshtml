@@ -1,32 +1,111 @@
+@model List<ArtBackend.Application.Artworks.ArtworkViewModel>
 @{ ViewData["Title"] = "Admin"; }
 
-<h1>Upload Artwork</h1>
+<div class="admin-header">
+    <h1>Admin</h1>
+    <form method="post" action="/account/logout">
+        <button type="submit">Logout</button>
+    </form>
+</div>
 
-<form method="post" action="/admin/artworks" enctype="multipart/form-data">
-    <label for="title">Title</label>
-    <input type="text" id="title" name="title" required />
+<section class="upload-section">
+    <h2>Upload Artwork</h2>
+    <form method="post" action="/admin/artworks" enctype="multipart/form-data" class="artwork-form">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required />
+        </div>
 
-    <label for="type">Type</label>
-    <input type="text" id="type" name="type" required />
+        <div class="form-group">
+            <label for="type">Type</label>
+            <select id="type" name="type" required>
+                <option value="painting">Painting</option>
+                <option value="drawing">Drawing</option>
+            </select>
+        </div>
 
-    <label for="year">Year</label>
-    <input type="number" id="year" name="year" />
+        <div class="form-group">
+            <label for="year">Year</label>
+            <input type="number" id="year" name="year" />
+        </div>
 
-    <label for="medium">Medium</label>
-    <input type="text" id="medium" name="medium" required />
+        <div class="form-group">
+            <label for="medium">Medium</label>
+            <input type="text" id="medium" name="medium" required />
+        </div>
 
-    <label for="size">Size</label>
-    <input type="text" id="size" name="size" required />
+        <div class="form-group">
+            <label for="size">Size</label>
+            <input type="text" id="size" name="size" required />
+        </div>
 
-    <label for="price">Price</label>
-    <input type="number" id="price" name="price" step="0.01" />
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" id="price" name="price" step="0.01" />
+        </div>
 
-    <label for="image">Image</label>
-    <input type="file" id="image" name="image" accept="image/*" required />
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" id="image" name="image" accept="image/*" required />
+        </div>
 
-    <button type="submit">Upload</button>
-</form>
+        <button type="submit">Upload</button>
+    </form>
+</section>
 
-<form method="post" action="/account/logout">
-    <button type="submit">Logout</button>
-</form>
+<section class="gallery-section">
+    <h2>Artworks</h2>
+    @foreach (var artwork in Model)
+    {
+        <div class="admin-artwork">
+            <img src="@artwork.ImageUrl" alt="@artwork.Title" />
+
+            <form method="post" action="/admin/artworks/@artwork.Id/update" class="artwork-form">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" name="title" value="@artwork.Title" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Type</label>
+                    <select name="type" required>
+                        <option value="painting" @(artwork.Type == "painting" ? "selected" : "")>Painting</option>
+                        <option value="drawing" @(artwork.Type == "drawing" ? "selected" : "")>Drawing</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Year</label>
+                    <input type="number" name="year" value="@artwork.Year" />
+                </div>
+
+                <div class="form-group">
+                    <label>Medium</label>
+                    <input type="text" name="medium" value="@artwork.Medium" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Size</label>
+                    <input type="text" name="size" value="@artwork.Size" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" name="price" value="@artwork.Price" step="0.01" />
+                </div>
+
+                <div class="form-group form-group--checkbox">
+                    <label for="sold-@artwork.Id">Sold</label>
+                    <input type="checkbox" id="sold-@artwork.Id" name="sold" value="true" @(artwork.Sold ? "checked" : "") />
+                </div>
+
+                <button type="submit">Save</button>
+            </form>
+
+            <form method="post" action="/admin/artworks/@artwork.Id/delete">
+                <input type="hidden" name="imageFileName" value="@(new Uri(artwork.ImageUrl).Segments.Last())" />
+                <button type="submit" class="delete-btn">Delete</button>
+            </form>
+        </div>
+    }
+</section>

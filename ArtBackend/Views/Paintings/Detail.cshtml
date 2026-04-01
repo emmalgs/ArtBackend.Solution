@@ -1,0 +1,77 @@
+@model ArtBackend.Application.Artworks.PaintingDetailViewModel
+@{ ViewData["Title"] = Model.Current.Title; Layout = "_PaintingsLayout"; }
+
+<div class="painting-page">
+
+    <nav class="left-panel">
+        <ul>
+            <li class="nav-section">ART</li>
+            <li><a href="/art/paintings">Paintings</a></li>
+            <li><a href="/art/drawings">Drawings</a></li>
+            <li><a href="/cv">CV</a></li>
+            <li><a href="/bio">Bio</a></li>
+            <li><a href="/artist-statement">Artist Statement</a></li>
+            <li class="nav-section">WORKSHOPS</li>
+        </ul>
+    </nav>
+
+    <div class="painting-viewer">
+        <div class="painting-nav">
+            @if (Model.PreviousId.HasValue)
+            {
+                <a href="/art/paintings/@Model.PreviousId" class="arrow">&lsaquo;</a>
+            }
+            else
+            {
+                <span class="arrow arrow--disabled">&lsaquo;</span>
+            }
+
+            <img src="@Model.Current.ImageUrl" alt="@Model.Current.Title" class="painting-image" />
+
+            @if (Model.NextId.HasValue)
+            {
+                <a href="/art/paintings/@Model.NextId" class="arrow">&rsaquo;</a>
+            }
+            else
+            {
+                <span class="arrow arrow--disabled">&rsaquo;</span>
+            }
+        </div>
+
+        <div class="painting-description">
+            <span>@Model.Current.Title</span>
+            <span>@Model.Current.Medium</span>
+            <span>@Model.Current.Size</span>
+            @if (Model.Current.Year.HasValue)
+            {
+                <span>@Model.Current.Year</span>
+            }
+            @if (Model.Current.Sold)
+            {
+                <span>Sold</span>
+            }
+            else if (Model.Current.Price.HasValue)
+            {
+                <span>$@Model.Current.Price</span>
+            }
+        </div>
+    </div>
+
+    <div class="right-panel">
+        @foreach (var year in Model.ByYear)
+        {
+            <div class="year-group">
+                <p class="year-label">@(year.Key == 0 ? "—" : year.Key.ToString())</p>
+                <div class="thumbnail-grid">
+                    @foreach (var painting in year.Value)
+                    {
+                        <a href="/art/paintings/@painting.Id" class="thumbnail @(painting.Id == Model.Current.Id ? "thumbnail--active" : "")">
+                            <img src="@painting.ImageUrl" alt="@painting.Title" />
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

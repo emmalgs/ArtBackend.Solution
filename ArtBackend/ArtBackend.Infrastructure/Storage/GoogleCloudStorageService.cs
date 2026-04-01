@@ -1,4 +1,5 @@
 using ArtBackend.Domain.Interfaces;
+using Google;
 using Google.Cloud.Storage.V1;
 
 namespace ArtBackend.Infrastructure.Storage;
@@ -23,6 +24,13 @@ public class GoogleCloudStorageService : IStorageService
 
     public async Task DeleteAsync(string fileName)
     {
-        await _client.DeleteObjectAsync(_bucketName, fileName);
+        try
+        {
+            await _client.DeleteObjectAsync(_bucketName, fileName);
+        }
+        catch (GoogleApiException ex) when (ex.HttpStatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            // Object doesn't exist in GCS — nothing to delete
+        }
     }
 }
