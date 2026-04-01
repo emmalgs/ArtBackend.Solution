@@ -14,8 +14,6 @@ builder.Services.AddScoped<IArtworkRepository, ArtworkRepository>();
 builder.Services.AddScoped<IArtworkService, ArtworkService>();
 builder.Services.AddSingleton<IStorageService, GoogleCloudStorageService>();
 
-builder.Services.AddControllers();
-
 builder.Services.AddCors(options =>
 {
   options.AddPolicy("AllowFrontend", policy =>
@@ -25,6 +23,9 @@ builder.Services.AddCors(options =>
     .AllowAnyMethod();
   });
 });
+
+builder.Services.AddControllers();
+
 
 var app = builder.Build();
 
