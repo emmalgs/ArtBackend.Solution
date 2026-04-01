@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.*" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.*" />
     <PackageReference Include="Google.Cloud.Storage.V1" Version="4.*" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.*" />
   </ItemGroup>
 
 </Project>
