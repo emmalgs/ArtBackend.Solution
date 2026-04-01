@@ -1,10 +1,9 @@
-using ArtBackend.Contracts.Artworks;
+using ArtBackend.Application.Artworks;
 using ArtBackend.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-[ApiController]
 [Route("artworks")]
-public class ArtworksController : ControllerBase
+public class ArtworksController : Controller
 {
     private readonly IArtworkService _service;
 
@@ -14,29 +13,22 @@ public class ArtworksController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> Index()
     {
         var artworks = await _service.GetAllAsync();
-        return Ok(artworks);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Create([FromForm] CreateArtworkRequest request, IFormFile image)
-    {
-        var artwork = new Artwork
+        var viewModels = artworks.Select(a => new ArtworkViewModel
         {
-            Id = Guid.NewGuid(),
-            Title = request.Title,
-            Type = request.Type,
-            Year = request.Year,
-            Medium = request.Medium,
-            Size = request.Size,
-            Price = request.Price,
-            Sold = false
-        };
+            Id = a.Id,
+            Title = a.Title,
+            Type = a.Type,
+            ImageUrl = a.ImageUrl,
+            Year = a.Year,
+            Medium = a.Medium,
+            Size = a.Size,
+            Price = a.Price,
+            Sold = a.Sold
+        }).ToList();
 
-        using var stream = image.OpenReadStream();
-        var created = await _service.CreateAsync(artwork, stream, image.FileName, image.ContentType);
-        return CreatedAtAction(nameof(GetAll), created);
+        return View(viewModels);
     }
 }

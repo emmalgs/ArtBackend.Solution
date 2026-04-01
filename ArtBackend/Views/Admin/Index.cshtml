@@ -1,0 +1,32 @@
+@{ ViewData["Title"] = "Admin"; }
+
+<h1>Upload Artwork</h1>
+
+<form method="post" action="/admin/artworks" enctype="multipart/form-data">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" required />
+
+    <label for="type">Type</label>
+    <input type="text" id="type" name="type" required />
+
+    <label for="year">Year</label>
+    <input type="number" id="year" name="year" />
+
+    <label for="medium">Medium</label>
+    <input type="text" id="medium" name="medium" required />
+
+    <label for="size">Size</label>
+    <input type="text" id="size" name="size" required />
+
+    <label for="price">Price</label>
+    <input type="number" id="price" name="price" step="0.01" />
+
+    <label for="image">Image</label>
+    <input type="file" id="image" name="image" accept="image/*" required />
+
+    <button type="submit">Upload</button>
+</form>
+
+<form method="post" action="/account/logout">
+    <button type="submit">Logout</button>
+</form>

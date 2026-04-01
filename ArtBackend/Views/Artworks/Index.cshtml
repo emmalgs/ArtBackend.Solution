@@ -1,0 +1,22 @@
+@model List<ArtBackend.Application.Artworks.ArtworkViewModel>
+@{ ViewData["Title"] = "Works"; }
+
+<h1>Works</h1>
+
+@foreach (var artwork in Model)
+{
+    <div class="artwork">
+        <img src="@artwork.ImageUrl" alt="@artwork.Title" />
+        <p>@artwork.Title</p>
+        <p>@artwork.Medium, @artwork.Year</p>
+        <p>@artwork.Size</p>
+        @if (artwork.Sold)
+        {
+            <p>Sold</p>
+        }
+        else
+        {
+            <p>$@artwork.Price</p>
+        }
+    </div>
+}

@@ -24,13 +24,21 @@ builder.Services.AddCors(options =>
   });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
 
+builder.Services.AddAuthentication("AdminCookie")
+    .AddCookie("AdminCookie", options =>
+    {
+        options.LoginPath = "/account/login";
+    });
 
 var app = builder.Build();
 
+app.UseStaticFiles();
 app.UseCors("AllowFrontend");
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
+app.MapDefaultControllerRoute();
 
 app.Run();
